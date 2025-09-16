@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>c0mum.tech — Periféricos</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Favicon (coloque c0mum.tech.png na mesma pasta) -->
+  <link rel="icon" type="image/png" href="img/c0mumtech-icon.png">
+
+  <style>
+    :root{
+      --accent-1: #6a00f4;
+      --accent-2: #00d4ff;
+      --overlay: rgba(0,0,0,0.65);
+      --card-bg: rgba(255,255,255,0.03);
+      --glass: rgba(255,255,255,0.06);
+    }
+
+    /* Página inteira com fundo (sua imagem) + overlay */
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #eee;
+      background:
+        linear-gradient(var(--overlay), var(--overlay)),
+        url("c0mum.tech.png") no-repeat center center fixed;
+      background-size: cover;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Navbar translucida */
+    .navbar {
+      background: linear-gradient(90deg, rgba(0,0,0,0.45), rgba(0,0,0,0.25));
+      backdrop-filter: blur(6px);
+    }
+
+    /* Logo pequeno (usado no topo) */
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      border-radius: 6px;
+      margin-right: 8px;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 55vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    .hero .content {
+      max-width: 960px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      padding: 2rem;
+      border-radius: 14px;
+      box-shadow: 0 6px 30px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02) inset;
+    }
+    .hero h1 {
+      font-weight: 700;
+      font-size: clamp(1.6rem, 3.6vw, 2.8rem);
+      margin-bottom: 0.3rem;
+    }
+    .hero p { color: #dcdcdc; opacity: 0.9; }
+
+    /* Botões estilo neon */
+    .btn-accent {
+      background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
+      border: none;
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(106,0,244,0.18);
+    }
+    .btn-accent:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0,212,255,0.12);
+    }
+
+    /* Products grid */
+    .products {
+      padding: 3rem 1rem;
+    }
+    .card.product-card {
+      background: linear-gradient(180deg, var(--card-bg), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.04);
+      color: #eee;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .card.product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    }
+
+    /* Thumbnail mock */
+    .thumb {
+      height: 140px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-bottom: 1px solid rgba(255,255,255,0.02);
+    }
+    .thumb img { max-height: 100%; max-width: 100%; object-fit: contain; filter: drop-shadow(0 6px 18px rgba(0,0,0,0.6)); }
+
+    /* Small helpers */
+    .muted { color: #cfcfcf; opacity: 0.9; }
+    .chip { font-size: 0.78rem; padding: 0.2rem .6rem; border-radius: 999px; background: rgba(255,255,255,0.03); color: #ddd; border: 1px solid rgba(255,255,255,0.03); }
+
+    footer {
+      padding: 2rem 1rem;
+      text-align: center;
+      color: #bbb;
+      border-top: 1px solid rgba(255,255,255,0.03);
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 576px){
+      .thumb { height: 110px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="img/c0mum.tech.png" alt="logo" class="brand-logo">
+        <strong>c0mum.tech</strong>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navcol" aria-controls="navcol" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navcol">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="#produtos">Produtos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+          <li class="nav-item ms-2">
+            <button class="btn btn-outline-light" id="cartBtn">Carrinho (<span id="cartCount">0</span>)</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="content">
+      <h1>c0mum.tech — Periféricos com atitude</h1>
+      <p class="muted">Mouse, teclado e headset selecionados pra quem não aceita lag. Navegue, escolha e teste com gosto (ou leve o prejuízo).</p>
+
+      <div class="d-flex justify-content-center gap-2 mt-3 flex-wrap">
+        <a class="btn btn-accent btn-lg" href="#produtos">Ver Produtos</a>
+        <button class="btn btn-outline-light" id="openAbout">Saiba Mais</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTROLES (busca + filtro) -->
+  <section class="products" id="produtos">
+    <div class="container">
+      <div class="row align-items-center mb-3">
+        <div class="col-md-6 mb-2 mb-md-0">
+          <div class="input-group">
+            <span class="input-group-text bg-dark border-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11 6a5 5 0 1 1-10 0 5 5 0 0 1 10 0z"/><path d="M12.344 11.344 15 14"/></svg></span>
+            <input id="searchInput" type="search" class="form-control bg-transparent text-light border-0" placeholder="Buscar produto (ex: mouse, teclado)">
+            <button class="btn btn-outline-light" id="clearSearch">Limpar</button>
+          </div>
+        </div>
+
+        <div class="col-md-6 text-md-end">
+          <div class="d-inline-block me-2">
+            <select id="categoryFilter" class="form-select bg-dark text-light" style="min-width:150px;">
+              <option value="">Todas as categorias</option>
+            </select>
+          </div>
+          <div class="d-inline-block">
+            <button class="btn btn-sm btn-accent" id="resetFilters">Resetar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRID -->
+      <div class="row" id="productsGrid" ></div>
+
+      <!-- Carregamento / fallback -->
+      <div id="noResults" class="text-center text-muted d-none mt-4">Nenhum produto encontrado.</div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section id="sobre" class="py-5">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <h3>Quem somos</h3>
+          <p class="muted">c0mum.tech é uma curadoria de periféricos com foco em performance e custo-benefício. A gente testa, quebra, volta a testar e só então recomenda — é sofrimento profissional.</p>
+          <p><a class="btn btn-accent" href="#contato">Fale conosco</a></p>
+        </div>
+        <div class="col-lg-6 text-center">
+          <img src="img/c0mum.tech.png" alt="logo" style="max-width:220px; filter: drop-shadow(0 8px 30px rgba(0,0,0,0.6));">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato" class="py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="p-4" style="background:var(--glass); border-radius:12px;">
+            <h4>Contato</h4>
+            <p class="muted">Quer revender? Quer reclamar? Quer nos enviar cookies? Manda mensagem:</p>
+            <form id="contactForm" class="row g-3">
+              <div class="col-md-6">
+                <input type="text" class="form-control bg-dark text-light border-0" placeholder="Seu nome" required>
+              </div>
+              <div class="col-md-6">
+                <input type="email" class="form-control bg-dark text-light border-0" placeholder="Email" required>
+              </div>
+              <div class="col-12">
+                <textarea class="form-control bg-dark text-light border-0" rows="3" placeholder="Mensagem"></textarea>
+              </div>
+              <div class="col-12 text-end">
+                <button class="btn btn-accent" type="submit">Enviar</button>
+              </div>
+            </form>
+            <div id="contactMsg" class="mt-2 text-success d-none">Mensagem enviada (no mundo real poderia ter funcionado).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> c0mum.tech — Feito com café e paciência.
+  </footer>
+
+  <!-- PRODUCT DETAILS MODAL -->
+  <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="productModalLabel"></h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6 text-center">
+              <div class="thumb p-3" id="modalThumb"></div>
+            </div>
+            <div class="col-md-6">
+              <h6 class="muted" id="modalCategory"></h6>
+              <p id="modalDesc"></p>
+              <p><strong>Preço:</strong> <span id="modalPrice"></span></p>
+              <div class="d-flex gap-2">
+                <button class="btn btn-accent" id="modalAddCart">Adicionar ao carrinho</button>
+                <button class="btn btn-outline-light" data-bs-dismiss="modal">Fechar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <small class="muted">SKU: <span id="modalSKU"></span></small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CART OFFCANVAS -->
+  <div class="offcanvas offcanvas-end text-light bg-dark" tabindex="-1" id="cartCanvas" aria-labelledby="cartCanvasLabel">
+    <div class="offcanvas-header">
+      <h5 id="cartCanvasLabel">Seu Carrinho</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" id="cartBody">
+      <div id="cartItems" class="mb-3"></div>
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <strong>Total:</strong>
+        <strong id="cartTotal">R$ 0,00</strong>
+      </div>
+      <div class="mt-3 text-end">
+        <button class="btn btn-accent" id="checkoutBtn">Finalizar compra</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap and dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // === Dados dos produtos (substitua/adicione à vontade) ===
+    const products = [
+      {
+        id: "m001",
+        name: "Mouse Attack shark x11",
+        category: "Mouse",
+        price: 149.90,
+        sku: "RAPX-01",
+        img: "img/x11.png", // se quiser, coloque caminho de imagem
+        desc: "Sensor de alta precisão 16.000 DPI, peso ajustável e iluminação RGB."
+      },
+      {
+        id: "k001",
+        name: "Teclado Mecânico",
+        category: "Teclado",
+        price: 329.90,
+        sku: "NOVA-87",
+        img: "img/teclado4.png",
+        desc: "Switches Outemu, NKRO, keycaps PBT e estrutura sólida em alumínio."
+      },
+      {
+        id: "h001",
+        name: "Headset gamer - redragon",
+        category: "Headset",
+        price: 199.90,
+        sku: "TH-7",
+        img: "img/fone.png",
+        desc: "Som espacial, microfone destacável e conforto para longas sessões."
+      },
+      {
+        id: "m002",
+        name: "Teclado mecanico",
+        category: "Teclado",
+        price: 299.99,
+        sku: "MINIM-01",
+        img: "img/teclado70%.png",
+        desc: "Compacto, leve e ideal pra jogar. Conta com kaykaps brown"
+      },
+    ];
+
+    // Estado do carrinho
+    let cart = JSON.parse(localStorage.getItem("cart_v1")) || {};
+
+    // Utils
+    const formatCurrency = v => v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+
+    // Inicial
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("year").textContent = new Date().getFullYear();
+      populateCategoryFilter();
+      renderProducts(products);
+      updateCartUI();
+
+      // eventos
+      document.getElementById("searchInput").addEventListener("input", e => filterAndRender());
+      document.getElementById("categoryFilter").addEventListener("change", () => filterAndRender());
+      document.getElementById("clearSearch").addEventListener("click", () => { document.getElementById("searchInput").value = ""; filterAndRender(); });
+      document.getElementById("resetFilters").addEventListener("click", () => { document.getElementById("searchInput").value=''; document.getElementById("categoryFilter").value=''; filterAndRender(); });
+
+      document.getElementById("openAbout").addEventListener("click", () => location.href = "#sobre");
+      document.getElementById("cartBtn").addEventListener("click", openCart);
+
+      // contato
+      document.getElementById("contactForm").addEventListener("submit", e => {
+        e.preventDefault();
+        // simulação
+        document.getElementById("contactMsg").classList.remove("d-none");
+        setTimeout(()=> document.getElementById("contactMsg").classList.add("d-none"), 3500);
+        e.target.reset();
+      });
+    });
+
+   
+    function renderProducts(list){
+      const grid = document.getElementById("productsGrid");
+      grid.innerHTML = "";
+      if(!list.length){
+        document.getElementById("noResults").classList.remove("d-none");
+        return;
+      }
+      document.getElementById("noResults").classList.add("d-none");
+
+      list.forEach(p => {
+        const col = document.createElement("div");
+        col.className = "col-sm-6 col-md-4 col-lg-3 mb-4";
+        col.innerHTML = `
+          <div class="card product-card h-100">
+            <div class="thumb d-flex align-items-center justify-content-center">
+              <img src="${p.img || 'https://via.placeholder.com/260x140?text='+encodeURIComponent(p.name)}" alt="${p.name}">
+            </div>
+            <div class="card-body d-flex flex-column">
+              <h6 class="card-title mb-1">${p.name}</h6>
+              <div class="mb-2"><span class="chip">${p.category}</span></div>
+              <p class="muted small flex-grow-1">${p.desc.length>80? p.desc.slice(0,80)+'...' : p.desc}</p>
+              <div class="d-flex justify-content-between align-items-center mt-3">
+                <strong>${formatCurrency(p.price)}</strong>
+                <div>
+                  <button class="btn btn-sm btn-outline-light btn-me" data-id="${p.id}" onclick="openProductModal('${p.id}')">Saiba Mais</button>
+                  <button class="btn btn-sm btn-accent" onclick="addToCart('${p.id}')">Comprar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(col);
+      });
+    }
+
+    
+    function filterAndRender(){
+      const q = (document.getElementById("searchInput").value||"").toLowerCase().trim();
+      const cat = document.getElementById("categoryFilter").value;
+      const filtered = products.filter(p => {
+        const matchQ = q === "" || p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || p.category.toLowerCase().includes(q);
+        const matchC = !cat || p.category === cat;
+        return matchQ && matchC;
+      });
+      renderProducts(filtered);
+    }
+
+   
+    function populateCategoryFilter(){
+      const sel = document.getElementById("categoryFilter");
+      const cats = Array.from(new Set(products.map(p => p.category)));
+      cats.forEach(c => {
+        const o = document.createElement("option");
+        o.value = c; o.textContent = c;
+        sel.appendChild(o);
+      });
+    }
+
+    
+    const productModal = new bootstrap.Modal(document.getElementById('productModal'));
+    function openProductModal(id){
+      const p = products.find(x=>x.id===id);
+      if(!p) return;
+      document.getElementById("productModalLabel").textContent = p.name;
+      document.getElementById("modalDesc").textContent = p.desc;
+      document.getElementById("modalPrice").textContent = formatCurrency(p.price);
+      document.getElementById("modalCategory").textContent = p.category;
+      document.getElementById("modalSKU").textContent = p.sku;
+      document.getElementById("modalThumb").innerHTML = '<img src="'+(p.img||'https://via.placeholder.com/320x200?text='+encodeURIComponent(p.name))+'" alt="">';
+      document.getElementById("modalAddCart").onclick = () => { addToCart(p.id); productModal.hide(); openCart(); };
+      productModal.show();
+    }
+
+    
+    function addToCart(id){
+      cart[id] = (cart[id]||0) + 1;
+      saveCart();
+      updateCartUI();
+    }
+    function removeFromCart(id){
+      delete cart[id];
+      saveCart();
+      updateCartUI();
+    }
+    function changeQty(id, qty){
+      if(qty <= 0) delete cart[id];
+      else cart[id] = qty;
+      saveCart();
+      updateCartUI();
+    }
+    function saveCart(){
+      localStorage.setItem("cart_v1", JSON.stringify(cart));
+    }
+
+    function updateCartUI(){
+      document.getElementById("cartCount").textContent = Object.values(cart).reduce((s,n)=>s+n,0);
+      const itemsNode = document.getElementById("cartItems");
+      itemsNode.innerHTML = "";
+      let total = 0;
+      if(Object.keys(cart).length===0){
+        itemsNode.innerHTML = '<div class="text-muted">Carrinho vazio.</div>';
+      } else {
+        Object.keys(cart).forEach(id => {
+          const qty = cart[id];
+          const p = products.find(x=>x.id===id);
+          if(!p) return;
+          const sub = p.price * qty;
+          total += sub;
+          const row = document.createElement("div");
+          row.className = "d-flex justify-content-between align-items-center py-2 border-bottom";
+          row.innerHTML = `
+            <div>
+              <div><strong>${p.name}</strong></div>
+              <div class="muted small">${formatCurrency(p.price)} x ${qty} = ${formatCurrency(sub)}</div>
+            </div>
+            <div class="text-end">
+              <div class="d-flex flex-column align-items-end">
+                <div class="btn-group btn-group-sm" role="group">
+                  <button class="btn btn-outline-light" onclick="changeQty('${id}', ${Math.max(0, qty-1)})">-</button>
+                  <button class="btn btn-outline-light" onclick="changeQty('${id}', ${qty+1})">+</button>
+                </div>
+                <button class="btn btn-link text-danger small mt-1" onclick="removeFromCart('${id}')">Remover</button>
+              </div>
+            </div>
+          `;
+          itemsNode.appendChild(row);
+        });
+      }
+      document.getElementById("cartTotal").textContent = formatCurrency(total);
+     
+      const off = new bootstrap.Offcanvas(document.getElementById('cartCanvas'));
+      
+    }
+
+
+    function openCart(){
+      const off = new bootstrap.Offcanvas(document.getElementById('cartCanvas'));
+      off.show();
+    }
+
+
+    document.getElementById("checkoutBtn").addEventListener("click", () => {
+      if(Object.keys(cart).length === 0){
+        alert("Seu carrinho está vazio. Coloque algo que preste aí.");
+        return;
+      }
+    
+      cart = {};
+      saveCart();
+      updateCartUI();
+      const off = bootstrap.Offcanvas.getInstance(document.getElementById('cartCanvas'));
+      off.hide();
+      alert("Compra simulada realizada! (no mundo real, integraria com gateway de pagamentos)");
+    });
+
+
+    renderProducts(products);
+    updateCartUI();
+
+  </script>
+</body>
+</html>
